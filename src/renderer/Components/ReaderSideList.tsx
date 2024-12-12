@@ -353,7 +353,7 @@ const ReaderSideList = memo(
                                 const val = e.target.value;
                                 let filter = "";
                                 for (let i = 0; i < val.length; i++) {
-                                    filter += val[i] + ".*";
+                                    filter += val[i];
                                 }
                                 setFocused(-1);
                                 setFilter(filter);
@@ -652,24 +652,21 @@ const ReaderSideList = memo(
                     ) : (
                         <ol>
                             {sortedLocations
-                                .filter((e) => new RegExp(filter, "ig") && new RegExp(filter, "ig").test(e.name))
+                                .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
                                 .map(
                                     (e, i, arr) =>
-                                        new RegExp(filter, "ig") &&
-                                        new RegExp(filter, "ig").test(e.name) && (
-                                            <ReaderSideListItem
-                                                name={e.name}
-                                                inHistory={[
-                                                    historySimple[0],
-                                                    historySimple[1].findIndex((a) => a === e.name),
-                                                ]}
-                                                focused={focused >= 0 && focused % arr.length === i}
-                                                key={e.name}
-                                                pages={e.pages}
-                                                current={mangaInReader?.link === e.link}
-                                                link={e.link}
-                                            />
-                                        )
+                                        <ReaderSideListItem
+                                            name={e.name}
+                                            inHistory={[
+                                                historySimple[0],
+                                                historySimple[1].findIndex((a) => a === e.name),
+                                            ]}
+                                            focused={focused >= 0 && focused % arr.length === i}
+                                            key={e.name}
+                                            pages={e.pages}
+                                            current={mangaInReader?.link === e.link}
+                                            link={e.link}
+                                        />
                                 )}
                         </ol>
                     )}

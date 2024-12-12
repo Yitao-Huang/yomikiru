@@ -367,7 +367,7 @@ const LocationsTab = (): ReactElement => {
                                         filter += window.path.sep;
                                         continue;
                                     }
-                                    filter += val[i] + ".*";
+                                    filter += val[i];
                                 }
                             setFocused(-1);
                             setFilter(filter);
@@ -398,23 +398,20 @@ const LocationsTab = (): ReactElement => {
                 ) : (
                     <ol>
                         {sortedLocations
-                            .filter((e) => new RegExp(filter, "ig") && new RegExp(filter, "ig").test(e.name))
+                            .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
                             .map(
                                 (e, i, arr) =>
-                                    new RegExp(filter, "ig") &&
-                                    new RegExp(filter, "ig").test(e.name) && (
-                                        <LocationListItem
-                                            name={e.name}
-                                            link={e.link}
-                                            focused={focused >= 0 && focused % arr.length === i}
-                                            inHistory={[
-                                                historySimple[0],
-                                                historySimple[1].findIndex((a) => a === e.name),
-                                            ]}
-                                            key={e.link}
-                                            setCurrentLink={setCurrentLink}
-                                        />
-                                    )
+                                    <LocationListItem
+                                        name={e.name}
+                                        link={e.link}
+                                        focused={focused >= 0 && focused % arr.length === i}
+                                        inHistory={[
+                                            historySimple[0],
+                                            historySimple[1].findIndex((a) => a === e.name),
+                                        ]}
+                                        key={e.link}
+                                        setCurrentLink={setCurrentLink}
+                                    />
                             )}
                     </ol>
                 )}
