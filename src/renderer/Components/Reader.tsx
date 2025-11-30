@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AppContext } from "../App";
 import ReaderSideList from "./ReaderSideList";
 import ReaderSettings from "./ReaderSettings";
@@ -45,7 +45,10 @@ const processChapterNumber = (chapterName: string): number | undefined => {
     return chapterNumber;
 };
 
-const Reader = () => {
+const Reader = ({ filter, setFilter }: {
+    filter: string;
+    setFilter: React.Dispatch<React.SetStateAction<string>>;
+  }): ReactElement => {
     const { pageNumberInputRef, checkValidFolder, setContextMenuData } = useContext(AppContext);
 
     const appSettings = useAppSelector((store) => store.appSettings);
@@ -1046,6 +1049,8 @@ const Reader = () => {
                 setSideListPinned={setSideListPinned}
                 setSideListWidth={setSideListWidth}
                 makeScrollPos={makeScrollPos}
+                filter={filter}
+                setFilter={setFilter}
             />
 
             {isAniSearchOpen && <AnilistSearch />}

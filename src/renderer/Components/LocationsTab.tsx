@@ -6,10 +6,14 @@ import { setAppSettings } from "../store/appSettings";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import LocationListItem from "./LocationListItem";
 import { promptSelectDir } from "../MainImports";
+import React from "react";
 
 type LocationData = { name: string; link: string; dateModified: number };
 
-const LocationsTab = (): ReactElement => {
+const LocationsTab = ({ filter, setFilter }: {
+    filter: string;
+    setFilter: React.Dispatch<React.SetStateAction<string>>;
+  }): ReactElement => {
     const { openInReader, setContextMenuData } = useContext(AppContext);
     const history = useAppSelector((store) => store.history);
     const appSettings = useAppSelector((store) => store.appSettings);
@@ -20,7 +24,6 @@ const LocationsTab = (): ReactElement => {
 
     const [locations, setLocations] = useState<LocationData[]>([]);
     const [isLoadingFile, setIsLoadingFile] = useState(true);
-    const [filter, setFilter] = useState<string>("");
     const [imageCount, setImageCount] = useState(0);
 
     const [focused, setFocused] = useState(-1);
@@ -32,7 +35,7 @@ const LocationsTab = (): ReactElement => {
 
     const displayList = (link = currentLink, refresh = false): void => {
         if (!refresh) {
-            setFilter("");
+            // setFilter("");
             setFocused(-1);
         }
         if (!window.fs.existsSync(link)) {
@@ -351,12 +354,6 @@ const LocationsTab = (): ReactElement => {
                                 } else val = val.replaceAll(window.path.sep, "");
                             }
 
-                            val = val.replaceAll("[", "\\[");
-                            val = val.replaceAll("]", "\\]");
-                            val = val.replaceAll("(", "\\(");
-                            val = val.replaceAll(")", "\\)");
-                            val = val.replaceAll("*", "\\-");
-                            val = val.replaceAll("+", "\\+");
 
                             let filter = "";
                             if (['"', "`", "'"].includes(val[0])) {
@@ -412,7 +409,8 @@ const LocationsTab = (): ReactElement => {
                                         key={e.link}
                                         setCurrentLink={setCurrentLink}
                                     />
-                            )}
+                            )
+                        }
                     </ol>
                 )}
             </div>

@@ -34,6 +34,8 @@ const ReaderSideList = memo(
         setSideListPinned,
         setSideListWidth,
         makeScrollPos,
+        filter,
+        setFilter,
     }: {
         openNextChapterRef: React.RefObject<HTMLButtonElement>;
         openPrevChapterRef: React.RefObject<HTMLButtonElement>;
@@ -45,6 +47,8 @@ const ReaderSideList = memo(
         setSideListPinned: React.Dispatch<React.SetStateAction<boolean>>;
         setSideListWidth: React.Dispatch<React.SetStateAction<number>>;
         makeScrollPos: () => void;
+        filter: string;
+        setFilter: React.Dispatch<React.SetStateAction<string>>;
     }) => {
         const { contextMenuData, openInReader, setContextMenuData, closeReader } = useContext(AppContext);
 
@@ -60,7 +64,6 @@ const ReaderSideList = memo(
 
         const sideListRef = useRef<HTMLDivElement>(null);
         const [chapterData, setChapterData] = useState<ChapterData[]>([]);
-        const [filter, setFilter] = useState<string>("");
         const [isListOpen, setListOpen] = useState(false);
         const [preventListClose, setpreventListClose] = useState(false);
         // const prevMangaRef = useRef<string>("");
@@ -114,7 +117,7 @@ const ReaderSideList = memo(
         }, [chapterData]);
         const makeChapterList = async (refresh = false) => {
             if (!refresh) {
-                setFilter("");
+                // setFilter("");
                 setFocused(-1);
             }
             // setFocused(-1);
@@ -348,6 +351,7 @@ const ReaderSideList = memo(
                             name=""
                             spellCheck={false}
                             placeholder="Type to Search"
+                            value={filter}
                             // tabIndex={-1}
                             onChange={(e) => {
                                 const val = e.target.value;
